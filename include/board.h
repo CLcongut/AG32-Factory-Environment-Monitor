@@ -37,8 +37,8 @@ extern "C"
 #define EXT_GPIO_MASK APB_MASK_GPIO4
 #define EXT_GPIO_BITS 0b1110
 
-#define GPIO_PIN_SETVALUE(gpio, bits, values) GPIO_SetValue(gpio, bits, bits | bits * values)
-#define GPIO_PIN_GETVALUE(gpio, bits) (((GPIO_GetValue(gpio, bits) & bits) != 0) ? 1 : 0)
+#define GPIO_PIN_SETVALUE(gpio, bits, values) GPIO_SetValue(gpio, bits, values * 0xff)
+#define GPIO_PIN_GETVALUE(gpio, bits) ((GPIO_GetValue(gpio, bits) != 0) ? 1 : 0)
 
     SYS_HSE_BypassTypeDef board_hse_source(void);
     RTC_ClkSourceTypeDef board_rtc_source(void);
@@ -61,5 +61,12 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
+
+typedef struct
+{
+    bool enable_Flag;
+    uint32_t interval_Time;
+    bool ready_Flag;
+} taskStruct;
 
 #endif

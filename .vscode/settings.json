@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "dht11.h": "c",
+        "board.h": "c"
+    }
+}
