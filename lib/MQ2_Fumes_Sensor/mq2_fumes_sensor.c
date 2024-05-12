@@ -28,6 +28,10 @@
 
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
 
+/**
+ * @brief mq2 烟雾传感器初始化
+ * 
+ */
 void MQ2FS_Init(void)
 {
     ADC_SetChannel(MQ2_ADC, MQ2_CHANNEL);
@@ -35,6 +39,11 @@ void MQ2FS_Init(void)
 
 #if 1
 
+/**
+ * @brief mq2 烟雾传感器数据读取
+ *
+ * @return uint32_t 烟雾传感器数据
+ */
 uint32_t MQ2FS_Read(void)
 {
     uint32_t mq2_value = 0;

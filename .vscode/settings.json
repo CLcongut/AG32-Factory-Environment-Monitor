@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "dht11.h": "c",
-        "board.h": "c"
+        "board.h": "c",
+        "system.h": "c",
+        "sys.h": "c"
     }
 }

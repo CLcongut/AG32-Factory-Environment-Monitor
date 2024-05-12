@@ -28,6 +28,10 @@
 
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
 
+/**
+ * @brief mq135 空气质量传感器初始化
+ *
+ */
 void MQ135AS_Init(void)
 {
     ADC_SetChannel(MQ135_ADC, MQ135_CHANNEL);
@@ -35,6 +39,11 @@ void MQ135AS_Init(void)
 
 #if 1
 
+/**
+ * @brief mq135 空气质量传感器数据读取
+ *
+ * @return uint32_t 空气质量传感器数据
+ */
 uint32_t MQ135AS_Read(void)
 {
     uint32_t mq135_value = 0;

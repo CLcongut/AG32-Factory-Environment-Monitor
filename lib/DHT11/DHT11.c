@@ -27,14 +27,23 @@
 
 #define DHT11_GET GPIO_PIN_GETVALUE(DHT11_PORT, DHT11_BITS)
 
+/**
+ * @brief dht11温湿度传感器初始化
+ * 
+ */
 void dht11_Init(void)
 {
-    // 在ve文件当中设置dht11数据引脚为开漏输出
     SYS_EnableAPBClock(DHT11_GPIO_MASK);
     GPIO_SetOutput(DHT11_PORT, DHT11_BITS);
     GPIO_SetHigh(DHT11_PORT, DHT11_BITS);
 }
 
+/**
+ * @brief dht11 温湿度传感器数据读取
+ *
+ * @param buf 读取到的数据地址
+ * @return int32_t 错误码
+ */
 int32_t dht11_Read(uint8_t *buf)
 {
     uint32_t t = 0;

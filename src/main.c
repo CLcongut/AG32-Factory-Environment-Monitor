@@ -1,6 +1,4 @@
-
-
-#include "board.h"
+#include "SYS.h"
 
 
 int main(void)
