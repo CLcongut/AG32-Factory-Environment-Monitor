@@ -3,6 +3,8 @@
         "dht11.h": "c",
         "board.h": "c",
         "system.h": "c",
-        "sys.h": "c"
+        "sys.h": "c",
+        "hb_gptimer.h": "c",
+        "task.h": "c"
     }
 }

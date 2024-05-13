@@ -2,6 +2,9 @@
 #define SYS_H
 
 #include "board.h"
+#include "TASK.h"
+#include "HB_GPTimer.h"
+#include "DHT11.h"
 
 #define MIN_IRQ_PRIORITY 1
 #define MAX_IRQ_PRIORITY PLIC_MAX_PRIORITY

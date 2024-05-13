@@ -1,6 +1,8 @@
 #include "SYS.h"
 #include "HB_GPTimer.h"
 
+_GPTimer_HB HeartBeat;
+
 /**
  * @brief 通用定时器0中断返回函数
  * 

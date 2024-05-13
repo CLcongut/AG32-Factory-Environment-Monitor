@@ -1,5 +1,12 @@
 #include "board.h"
+
 #include "SYS.h"
+#include "TASK.h"
+
+#include "HB_GPTimer.h"
+
+#include "DHT11.h"
+
 
 void _sys_Init(void)
 {

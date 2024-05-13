@@ -7,11 +7,11 @@
  * @brief 定时器心跳结构体
  * 
  */
-typedef struct 
+typedef struct HB_GPTimer
 {
     uint64_t G_HB_Timer;
 } _GPTimer_HB;
 
-_GPTimer_HB HeartBeat;
+extern _GPTimer_HB HeartBeat;
 
 #endif
