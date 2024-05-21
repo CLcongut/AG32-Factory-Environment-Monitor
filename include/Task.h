@@ -13,11 +13,15 @@ extern TaskPollingStruct TaskPST[];
 
 typedef struct Task_Value_Struct
 {
-    uint8_t *dht11_buf;
+    uint8_t task_cnt;
+    uint8_t task_now;
+    uint8_t dht11_buf[5];
 } TaskValueStruct;
 
-extern TaskValueStruct Task_VST;
+extern TaskValueStruct TaskVST;
 
+void Task_Init(void);
 void T_DHT11_Read(void);
+void Task_Clear_HB(void);
 
 #endif
