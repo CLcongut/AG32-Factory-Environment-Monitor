@@ -5,6 +5,11 @@
         "system.h": "c",
         "sys.h": "c",
         "hb_gptimer.h": "c",
-        "task.h": "c"
+        "task.h": "c",
+        "lcd_init.h": "c",
+        "lcd.h": "c",
+        "main.h": "c",
+        "mq135_air_sensor.h": "c",
+        "mq2_fumes_sensor.h": "c"
     }
 }

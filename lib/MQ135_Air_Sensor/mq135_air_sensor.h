@@ -4,7 +4,6 @@
 #include "board.h"
 
 void MQ135AS_Init(void);
-uint32_t MQ135AS_Read(void);
-float_t _t_MQ135AS_Read_percent(void);
+uint8_t MQ135AS_Read(uint8_t *air);
 
 #endif

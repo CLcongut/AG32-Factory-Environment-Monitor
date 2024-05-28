@@ -22,8 +22,9 @@
 
 #include "board.h"
 #include "analog_ip.h"
+#include "mq135_air_sensor.h"
 
-#define MQ135_CHANNEL ADC_CHANNEL10
+#define MQ135_CHANNEL ADC_CHANNEL13
 #define MQ135_ADC ADC0
 
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
@@ -37,27 +38,28 @@ void MQ135AS_Init(void)
     ADC_SetChannel(MQ135_ADC, MQ135_CHANNEL);
 }
 
-#if 1
-
 /**
  * @brief mq135 空气质量传感器数据读取
  *
  * @return uint32_t 空气质量传感器数据
  */
-uint32_t MQ135AS_Read(void)
+uint8_t MQ135AS_Read(uint8_t *air)
 {
     uint32_t mq135_value = 0;
+    uint8_t *data = air;
     for (uint8_t i = 0; i < 50; i++)
     {
         ADC_Start(MQ135_ADC, sclk_div);
         ADC_WaitForEoc(MQ135_ADC);
         mq135_value += ADC_GetData(MQ135_ADC);
     }
-    return mq135_value / 50;
+    mq135_value = mq135_value * 200 / 4096;
+    data[0] = mq135_value / 100;
+    data[1] = mq135_value % 100;
+    return 1;
 }
 
-#elif 0
-
+#if 0
 uint32_t MQ135AS_Read(void)
 {
     uint32_t mq135_value;
@@ -66,12 +68,4 @@ uint32_t MQ135AS_Read(void)
     mq135_value = ADC_GetData(MQ135_ADC);
     return mq135_value;
 }
-
 #endif
-
-float_t _t_MQ135AS_Read_percent(void)
-{
-    uint32_t _t_mq135value = 0;
-    _t_mq135value = MQ135AS_Read();
-    return _t_mq135value * 100 / 4094.0;
-}

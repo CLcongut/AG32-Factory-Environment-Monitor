@@ -1,10 +1,21 @@
-#ifndef SYS_H
-#define SYS_H
+#ifndef MAIN_H
+#define MAIN_H
+
+/*是否使用主循环判断间隔时间，关闭则为每次定时器中断时判断*/
+#define JUDGE_IN_WHILE
 
 #include "board.h"
-#include "TASK.h"
+#include "main.h"
+
+#include "task.h"
+#include "gui.h"
 #include "HB_GPTimer.h"
+
+#include "lcd.h"
+#include "lcd_init.h"
 #include "DHT11.h"
+#include "mq135_air_sensor.h"
+#include "mq2_fumes_sensor.h"
 
 #define MIN_IRQ_PRIORITY 1
 #define MAX_IRQ_PRIORITY PLIC_MAX_PRIORITY
@@ -23,5 +34,9 @@
 #define USB_PRIORITY (MAX_IRQ_PRIORITY - 1)
 #define MAC_PRIORITY (MAX_IRQ_PRIORITY - 1)
 #define WDOG_PRIORITY (MAX_IRQ_PRIORITY - 0)
+
+void _sys_Init(void);
+void _sys_Load(void);
+void _sys_Loop(void);
 
 #endif
