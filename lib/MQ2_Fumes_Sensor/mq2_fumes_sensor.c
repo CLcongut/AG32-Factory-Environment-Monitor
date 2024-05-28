@@ -24,7 +24,7 @@
 #include "analog_ip.h"
 #include "mq2_fumes_sensor.h"
 
-#define MQ2_CHANNEL ADC_CHANNEL10
+#define MQ2_CHANNEL ADC_CHANNEL11
 #define MQ2_ADC ADC0
 
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
@@ -45,6 +45,7 @@ void MQ2FS_Init(void)
  */
 uint8_t MQ2FS_Read(uint8_t *fume)
 {
+    ADC_SetChannel(MQ2_ADC, MQ2_CHANNEL);
     uint32_t mq2_value = 0;
     uint8_t *data = fume;
     for (uint8_t i = 0; i < 50; i++)

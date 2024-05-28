@@ -10,6 +10,7 @@
 #include "DHT11.h"
 #include "mq135_air_sensor.h"
 #include "mq2_fumes_sensor.h"
+#include "fire_sensor.h"
 
 int main(void)
 {
@@ -18,8 +19,7 @@ int main(void)
     Task_Init();
     Gui_Init();
     dht11_Init();
-    MQ135AS_Init();
-    MQ2FS_Init();
+    FireSS_Init();
 
     Gui_Load();
     while (1)

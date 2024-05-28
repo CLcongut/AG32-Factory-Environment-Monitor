@@ -9,8 +9,9 @@ TaskValueStruct TaskVST;
 
 TaskPollingStruct TaskPST[] = {
     {true, 1000, false, T_DHT11_Read},
-    {true, 500, false, T_MQ135AS_Read},
-    {true, 500, false, T_MQ2FS_Read}};
+    {true, 1000, false, T_MQ135AS_Read},
+    {true, 1000, false, T_MQ2FS_Read},
+    {true, 1000, false, T_FireSS_Read}};
 
 #ifndef JUDGE_IN_WHILE
 void Task_Judge(uint32_t hb_timer)
@@ -61,23 +62,30 @@ void Task_System(void)
 
 void T_DHT11_Read(void)
 {
-    // if (!dht11_Read(TaskVST.dht11_buf))
-    // {
-    //     GUI_Show_TAH();
-    // }
-    LCD_ShowIntNum(0, 0, test_value1++, 4, BLACK, WHITE, 16);
+    if (!dht11_Read(TaskVST.dht11_buf))
+    {
+        GUI_Show_TAH();
+    }
 }
 
 void T_MQ135AS_Read(void)
 {
-    // if (MQ135AS_Read(TaskVST.mq135_buf))
-    // {
-    //     GUI_Show_Air();
-    // }
-    LCD_ShowIntNum(0, 20, test_value2++, 4, BLACK, WHITE, 16);
+    if (MQ135AS_Read(TaskVST.mq135_buf))
+    {
+        GUI_Show_Air();
+    }
 }
 
 void T_MQ2FS_Read(void)
 {
-    LCD_ShowIntNum(0, 40, test_value3++, 4, BLACK, WHITE, 16);
+    if (MQ2FS_Read(TaskVST.mq2_buf))
+    {
+        GUI_Show_Fume();
+    }
+}
+
+void T_FireSS_Read(void)
+{
+    TaskVST.fire_state = FireSS_Read();
+    GUI_Show_Fire();
 }

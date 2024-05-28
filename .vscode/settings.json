@@ -10,6 +10,8 @@
         "lcd.h": "c",
         "main.h": "c",
         "mq135_air_sensor.h": "c",
-        "mq2_fumes_sensor.h": "c"
+        "mq2_fumes_sensor.h": "c",
+        "analog_ip.h": "c",
+        "fire_sensor.h": "c"
     }
 }

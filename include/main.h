@@ -16,6 +16,7 @@
 #include "DHT11.h"
 #include "mq135_air_sensor.h"
 #include "mq2_fumes_sensor.h"
+#include "fire_sensor.h"
 
 #define MIN_IRQ_PRIORITY 1
 #define MAX_IRQ_PRIORITY PLIC_MAX_PRIORITY

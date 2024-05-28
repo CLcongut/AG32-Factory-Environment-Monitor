@@ -19,6 +19,8 @@ typedef struct Task_Value_Struct
     uint8_t task_now;
     uint8_t dht11_buf[5];
     uint8_t mq135_buf[3];
+    uint8_t mq2_buf[3];
+    bool fire_state;
 } TaskValueStruct;
 
 extern TaskValueStruct TaskVST;
@@ -32,5 +34,6 @@ void Task_System(void);
 void T_DHT11_Read(void);
 void T_MQ135AS_Read(void);
 void T_MQ2FS_Read(void);
+void T_FireSS_Read(void);
 
 #endif

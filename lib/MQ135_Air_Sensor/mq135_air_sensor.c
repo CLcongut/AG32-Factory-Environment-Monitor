@@ -45,6 +45,7 @@ void MQ135AS_Init(void)
  */
 uint8_t MQ135AS_Read(uint8_t *air)
 {
+    ADC_SetChannel(MQ135_ADC, MQ135_CHANNEL);
     uint32_t mq135_value = 0;
     uint8_t *data = air;
     for (uint8_t i = 0; i < 50; i++)
