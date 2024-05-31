@@ -24,6 +24,17 @@ typedef struct Task_Value_Struct
 } TaskValueStruct;
 
 extern TaskValueStruct TaskVST;
+
+typedef struct Task_Threshold_Struct
+{
+    uint8_t temp_V;
+    uint8_t humi_V;
+    uint8_t air_V;
+    uint8_t fume_V;
+} TaskThresholdStruct;
+
+extern TaskThresholdStruct TaskTST;
+
 #ifndef JUDGE_IN_WHILE
 void Task_Judge(uint32_t hb_timer);
 #elif defined JUDGE_IN_WHILE
@@ -35,5 +46,8 @@ void T_DHT11_Read(void);
 void T_MQ135AS_Read(void);
 void T_MQ2FS_Read(void);
 void T_FireSS_Read(void);
+void T_Condition_Judge(void);
+void T_Transmit_Data(void);
+void T_Receive_Data(void);
 
 #endif

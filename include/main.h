@@ -7,6 +7,7 @@
 #include "board.h"
 #include "main.h"
 
+#include "usart.h"
 #include "task.h"
 #include "gui.h"
 #include "HB_GPTimer.h"
@@ -17,6 +18,10 @@
 #include "mq135_air_sensor.h"
 #include "mq2_fumes_sensor.h"
 #include "fire_sensor.h"
+
+#include "beep.h"
+#include "relay.h"
+#include "step_motor.h"
 
 #define MIN_IRQ_PRIORITY 1
 #define MAX_IRQ_PRIORITY PLIC_MAX_PRIORITY
@@ -35,9 +40,5 @@
 #define USB_PRIORITY (MAX_IRQ_PRIORITY - 1)
 #define MAC_PRIORITY (MAX_IRQ_PRIORITY - 1)
 #define WDOG_PRIORITY (MAX_IRQ_PRIORITY - 0)
-
-void _sys_Init(void);
-void _sys_Load(void);
-void _sys_Loop(void);
 
 #endif

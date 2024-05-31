@@ -6,12 +6,16 @@ uint16_t test_value2;
 uint16_t test_value3;
 
 TaskValueStruct TaskVST;
+TaskThresholdStruct TaskTST;
 
 TaskPollingStruct TaskPST[] = {
     {true, 1000, false, T_DHT11_Read},
     {true, 1000, false, T_MQ135AS_Read},
     {true, 1000, false, T_MQ2FS_Read},
-    {true, 1000, false, T_FireSS_Read}};
+    {true, 1000, false, T_FireSS_Read},
+    {true, 500, false, T_Condition_Judge},
+    {true, 2000, false, T_Transmit_Data},
+    {true, 500, false, T_Receive_Data}};
 
 #ifndef JUDGE_IN_WHILE
 void Task_Judge(uint32_t hb_timer)
@@ -88,4 +92,27 @@ void T_FireSS_Read(void)
 {
     TaskVST.fire_state = FireSS_Read();
     GUI_Show_Fire();
+}
+
+void T_Condition_Judge(void)
+{
+    if (TaskVST.mq2_buf[0] > TaskTST.fume_V ||
+        TaskVST.mq135_buf[0] > TaskTST.air_V ||
+        TaskVST.fire_state == true)
+    {
+        Beep_ON();
+    }
+    else
+    {
+        Beep_OFF();
+    }
+}
+
+void T_Transmit_Data(void)
+{
+    S_USART_Trans();
+}
+
+void T_Receive_Data(void)
+{
 }
