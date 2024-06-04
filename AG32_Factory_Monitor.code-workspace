@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "ESP32_MQTT",
+			"path": "../ESP32_MQTT"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"dht11.h": "c",
+			"board.h": "c",
+			"system.h": "c",
+			"sys.h": "c",
+			"hb_gptimer.h": "c",
+			"task.h": "c",
+			"lcd_init.h": "c",
+			"lcd.h": "c",
+			"main.h": "c",
+			"mq135_air_sensor.h": "c",
+			"mq2_fumes_sensor.h": "c",
+			"analog_ip.h": "c",
+			"fire_sensor.h": "c",
+			"beep.h": "c",
+			"relay.h": "c",
+			"step_motor.h": "c",
+			"gui.h": "c"
+		}
+	}
+}
