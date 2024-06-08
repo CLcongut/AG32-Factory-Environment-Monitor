@@ -16,6 +16,7 @@
         "beep.h": "c",
         "relay.h": "c",
         "step_motor.h": "c",
-        "gui.h": "c"
+        "gui.h": "c",
+        "usart.h": "c"
     }
 }
