@@ -24,9 +24,6 @@
 #include "analog_ip.h"
 #include "mq2_fumes_sensor.h"
 
-#define MQ2_CHANNEL ADC_CHANNEL11
-#define MQ2_ADC ADC0
-
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
 
 /**

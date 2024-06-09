@@ -1,13 +1,6 @@
 #include "board.h"
 #include "relay.h"
 
-#define RELAY1_GPIO_MASK APB_MASK_GPIO4
-#define RELAY2_GPIO_MASK APB_MASK_GPIO4
-#define RELAY1_PORT GPIO4
-#define RELAY2_PORT GPIO4
-#define RELAY1_BITS GPIO_BIT0
-#define RELAY2_BITS GPIO_BIT0
-
 void Relay_Init(void)
 {
     SYS_EnableAPBClock(RELAY1_GPIO_MASK);

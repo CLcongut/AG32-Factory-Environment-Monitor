@@ -1,7 +1,17 @@
 #ifndef DHT11_H
 #define DHT11_H
 
-#include "board.h"
+#define DHT11_GPIO_MASK APB_MASK_GPIO4
+#define DHT11_PORT GPIO4
+#define DHT11_BITS GPIO_BIT6
+
+#define DHT11_SETOUTPUT GPIO_SetOutput(DHT11_PORT, DHT11_BITS)
+#define DHT11_SETINPUT GPIO_SetInput(DHT11_PORT, DHT11_BITS)
+
+#define DHT11_SETHIGH GPIO_SetHigh(DHT11_PORT, DHT11_BITS)
+#define DHT11_SETLOW GPIO_SetLow(DHT11_PORT, DHT11_BITS)
+
+#define DHT11_GET GPIO_PIN_GETVALUE(DHT11_PORT, DHT11_BITS)
 
 void dht11_Init(void);
 int32_t dht11_Read(uint8_t *buf);

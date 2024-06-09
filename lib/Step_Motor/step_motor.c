@@ -1,26 +1,6 @@
 #include "board.h"
 #include "Step_Motor.h"
 
-#define Motor_GPIO_MASK APB_MASK_GPIO4
-#define Motor_GPIO_PORT GPIO4
-
-#define Motor_A_Bit GPIO_BIT0
-#define Motor_B_Bit GPIO_BIT1
-#define Motor_C_Bit GPIO_BIT2
-#define Motor_D_Bit GPIO_BIT3
-
-#define MOTOR_A_H GPIO_SetHigh(Motor_GPIO_PORT, Motor_A_Bit)
-#define MOTOR_A_L GPIO_SetLow(Motor_GPIO_PORT, Motor_A_Bit)
-
-#define MOTOR_B_H GPIO_SetHigh(Motor_GPIO_PORT, Motor_B_Bit)
-#define MOTOR_B_L GPIO_SetLow(Motor_GPIO_PORT, Motor_B_Bit)
-
-#define MOTOR_C_H GPIO_SetHigh(Motor_GPIO_PORT, Motor_C_Bit)
-#define MOTOR_C_L GPIO_SetLow(Motor_GPIO_PORT, Motor_C_Bit)
-
-#define MOTOR_D_H GPIO_SetHigh(Motor_GPIO_PORT, Motor_D_Bit)
-#define MOTOR_D_L GPIO_SetLow(Motor_GPIO_PORT, Motor_D_Bit)
-
 void Motor_Init(void)
 {
     SYS_EnableAPBClock(Motor_GPIO_MASK);

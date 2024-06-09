@@ -24,8 +24,7 @@
 #include "analog_ip.h"
 #include "mq135_air_sensor.h"
 
-#define MQ135_CHANNEL ADC_CHANNEL13
-#define MQ135_ADC ADC0
+
 
 static uint32_t sclk_div = 9; // Divided by 20 = (9 + 1) * 2
 
