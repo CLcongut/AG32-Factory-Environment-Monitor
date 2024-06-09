@@ -42,6 +42,7 @@ void Task_Judge(uint32_t hb_timer);
 #elif defined JUDGE_IN_WHILE
 void Task_Judge(void);
 #endif
+
 void Task_Init(void);
 void Task_System(void);
 void T_DHT11_Read(void);
@@ -52,5 +53,6 @@ void T_Condition_Judge(void);
 void T_Transmit_Data(void);
 void T_Receive_Data(void);
 void T_Memu_Switch(void);
+void T_Key_Scan(void);
 
 #endif

@@ -122,16 +122,6 @@ void Gui_Load(void)
 #endif
 }
 
-void Gui_Menu_2(void)
-{
-    LCD_Fill(0, 0, LCD_W, LCD_H, GREEN);
-}
-
-void Gui_Menu_3(void)
-{
-    LCD_Fill(0, 0, LCD_W, LCD_H, BLUE);
-}
-
 void GUI_Show_Battery(void)
 {
 }
@@ -168,4 +158,39 @@ void GUI_Show_Fire(bool fireState)
         LCD_ShowChinese(FIRE_X_POS, FIRE_Y_POS, "当前", FIRE_F_COLOR, FIRE_B_COLOR, FIRE_FONT, 0);
         LCD_ShowChinese(FIRE_X_POS, FIRE_Y_POS + 22, "无火", FIRE_F_COLOR, FIRE_B_COLOR, FIRE_FONT, 0);
     }
+}
+
+#define AIR_TS_X_POS 58
+#define AIR_TS_Y_POS 138
+
+#define FUME_TS_X_POS 98
+#define FUME_TS_Y_POS 138
+void Gui_Menu_2(void)
+{
+    LCD_Fill(0, 0, LCD_W, LCD_H, WHITE);
+    LCD_ShowChinese(4, 4, "阈", BLACK, WHITE, 16, 0);
+    LCD_ShowChinese(4, 22, "值", BLACK, WHITE, 16, 0);
+    LCD_ShowChinese(4, 40, "设", BLACK, WHITE, 16, 0);
+    LCD_ShowChinese(4, 58, "定", BLACK, WHITE, 16, 0);
+    LCD_DrawRectangle(AIR_TS_X_POS - 2, AIR_TS_Y_POS + 2, AIR_TS_X_POS + 11, AIR_TS_Y_POS - 101, BLACK);
+    LCD_ShowChinese(AIR_TS_X_POS - 10, AIR_TS_Y_POS + 4, "空气", BLACK, WHITE, 16, 0);
+
+    LCD_DrawRectangle(FUME_TS_X_POS - 2, FUME_TS_Y_POS + 2, FUME_TS_X_POS + 11, FUME_TS_Y_POS - 101, BLACK);
+    LCD_ShowChinese(FUME_TS_X_POS - 10, FUME_TS_Y_POS + 4, "烟雾", BLACK, WHITE, 16, 0);
+    GUI_TS_Progress(0, 0);
+}
+
+void GUI_TS_Progress(uint8_t air_ts, uint8_t fume_ts)
+{
+    LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts - 1, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts - 1, WHITE);
+    LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts, BLACK);
+    LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, BLACK, WHITE, 12);
+    LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts - 1, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts - 1, WHITE);
+    LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts, BLACK);
+    LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, BLACK, WHITE, 12);
+}
+
+void Gui_Menu_3(void)
+{
+    LCD_Fill(0, 0, LCD_W, LCD_H, BLUE);
 }

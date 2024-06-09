@@ -11,6 +11,7 @@
 #include "task.h"
 #include "gui.h"
 #include "HB_GPTimer.h"
+#include "key.h"
 
 #include "lcd.h"
 #include "lcd_init.h"

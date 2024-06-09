@@ -5,6 +5,7 @@
 #include "task.h"
 #include "gui.h"
 #include "HB_GPTimer.h"
+#include "key.h"
 
 #include "lcd.h"
 #include "lcd_init.h"
@@ -22,13 +23,15 @@ int main(void)
     board_init();
     GpTimer0_Heart_Init(1000, 100);
     S_USART_Init();
+    Key_Init();
     Gui_Init();
     dht11_Init();
     FireSS_Init();
     Beep_Init();
 
     Task_Init();
-    Gui_Load();
+    // Gui_Load();
+    Gui_Menu_2();
     while (1)
     {
 #ifdef JUDGE_IN_WHILE

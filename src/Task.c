@@ -9,14 +9,16 @@ TaskValueStruct TaskVST;
 TaskThresholdStruct TaskTST;
 
 TaskPollingStruct TaskPST[] = {
-    {true, 1000, false, T_DHT11_Read},
-    {true, 1000, false, T_MQ135AS_Read},
-    {true, 1000, false, T_MQ2FS_Read},
-    {true, 1000, false, T_FireSS_Read},
+    {false, 1000, false, T_DHT11_Read},
+    {false, 1000, false, T_MQ135AS_Read},
+    {false, 1000, false, T_MQ2FS_Read},
+    {false, 1000, false, T_FireSS_Read},
     {false, 500, false, T_Memu_Switch},
+    {true, 100, false, T_Key_Scan},
     {false, 500, false, T_Condition_Judge},
     {false, 2000, false, T_Transmit_Data},
-    {true, 500, false, T_Receive_Data}};
+    {false, 500, false, T_Receive_Data},
+};
 
 #ifndef JUDGE_IN_WHILE
 void Task_Judge(uint32_t hb_timer)
@@ -41,7 +43,7 @@ void Task_Judge(void)
         {
             if ((HeartBeat.HB_Timer % TaskPST[i].Task_Interval_Time) == 0)
             {
-                TaskPST[i].Task_Status_Flag = 1;
+                TaskPST[i].Task_Status_Flag = true;
             }
         }
     }
@@ -52,6 +54,7 @@ void Task_Init(void)
 {
     TaskVST.task_now = 0;
     TaskVST.task_cnt = sizeof(TaskPST) / sizeof(TaskPST[0]);
+    TaskVST.menu_wtc = 1;
 }
 
 void Task_System(void)
@@ -59,7 +62,7 @@ void Task_System(void)
     if (TaskPST[TaskVST.task_now].Task_Status_Flag)
     {
         TaskPST[TaskVST.task_now].Function_Hook();
-        TaskPST[TaskVST.task_now].Task_Status_Flag = 0;
+        TaskPST[TaskVST.task_now].Task_Status_Flag = false;
     }
     if (++TaskVST.task_now >= TaskVST.task_cnt)
         TaskVST.task_now = 0;
@@ -152,4 +155,32 @@ void T_Memu_Switch(void)
         break;
     }
     TaskPST[4].Task_Enable_Flag = false;
+}
+
+void T_Key_Scan(void)
+{
+    uint8_t Key_Num = Key_Scan();
+    switch (Key_Num)
+    {
+    case 1:
+        TaskPST[4].Task_Enable_Flag = true;
+        if (++TaskVST.menu_wtc > 3)
+            TaskVST.menu_wtc = 1;
+        break;
+
+    case 2:
+        break;
+
+    case 3:
+        GUI_TS_Progress(++test_value1, ++test_value2);
+        break;
+
+    case 4:
+        GUI_TS_Progress(--test_value1, --test_value2);
+        break;
+
+    default:
+        break;
+    }
+    // LCD_ShowIntNum(0, 120, Key_Scan(), 2, BLACK, WHITE, 12);
 }
