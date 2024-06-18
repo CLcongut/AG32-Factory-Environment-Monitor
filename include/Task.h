@@ -23,6 +23,7 @@ typedef struct Task_Value_Struct
     uint8_t mq2_buf[3];
     bool fire_past_state;
     bool fire_curr_state;
+    uint8_t power;
 } TaskValueStruct;
 
 extern TaskValueStruct TaskVST;

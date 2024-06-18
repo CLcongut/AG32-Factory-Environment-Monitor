@@ -3,9 +3,9 @@
 
 #define HEAD 0xAA
 #define ADDRESS 0x37
-#define SENSORCNT 5
-#define TRAIL 0xBB
-#define DATALEN 9
+#define CMD 0x01
+#define DATACNT 8
+#define DATALEN DATACNT + 5
 
 volatile char isRecvEnd = 0; // 是否收取idle完整一包
 volatile char rcvLen = 0;    // rx收取的包的长度
@@ -47,17 +47,38 @@ void S_USART_Init(void)
     // GPIO_SetLow(GPIO1, GPIO_BIT0);
 }
 
+uint8_t CheckSum(uint8_t *Buf, uint8_t Len)
+{
+    uint8_t i = 0;
+    uint8_t sum = 0;
+    uint8_t checksum = 0;
+
+    for (i = 0; i < Len; i++)
+    {
+        sum += *Buf++;
+    }
+
+    checksum = sum & 0xff;
+
+    return checksum;
+}
+
 void S_USART_Trans(void)
 {
     txbuf[0] = HEAD;
     txbuf[1] = ADDRESS;
-    txbuf[2] = SENSORCNT;
-    txbuf[3] = TaskVST.dht11_buf[2]; // 温度整数
-    txbuf[4] = TaskVST.dht11_buf[0]; // 湿度整数
-    txbuf[5] = TaskVST.mq135_buf[0]; // 空气整数
-    txbuf[6] = TaskVST.mq2_buf[0];   // 烟雾整数
-    txbuf[7] = TaskVST.fire_curr_state;
-    txbuf[8] = TRAIL;
+    txbuf[2] = CMD;
+    txbuf[3] = DATACNT;
+    txbuf[4] = TaskVST.dht11_buf[2]; // 温度整数
+    txbuf[5] = TaskVST.dht11_buf[0]; // 湿度整数
+    txbuf[6] = TaskVST.mq135_buf[0]; // 空气整数
+    txbuf[7] = TaskVST.mq2_buf[0];   // 烟雾整数
+    txbuf[8] = TaskVST.fire_curr_state;
+    txbuf[9] = TaskVST.power;
+    txbuf[10] = TaskTST.air_V;
+    txbuf[11] = TaskTST.fume_V;
+    uint8_t *pcheck = txbuf + 4;
+    txbuf[12] = CheckSum(pcheck, DATACNT);
     UART_Send(UART1, txbuf, DATALEN);
 }
 
@@ -67,26 +88,12 @@ void S_USART_Recev(void)
     {
         UART_Send(UART1, rxbuf, rcvLen);
         UART_Send(UART1, "\r\n", strlen("\r\n"));
-        if (strstr((const char *)rxbuf, "ON"))
+        if (rxbuf[2] == 0x02)
         {
-            TaskPST[4].Task_Enable_Flag = true;
-            TaskVST.menu_wtc = 1;
-            // UART_Send(UART1, "Bright\r\n", strlen("Bright\r\n"));
-            // GPIO_SetHigh(GPIO1, GPIO_BIT0);
+            TaskTST.air_V = rxbuf[4];
+            TaskTST.fume_V = rxbuf[5];
         }
-        else if (strstr((const char *)rxbuf, "OFF"))
-        {
-            TaskPST[4].Task_Enable_Flag = true;
-            TaskVST.menu_wtc = 2;
-            // UART_Send(UART1, "Dark\r\n", strlen("Dark\r\n"));
-            // GPIO_SetLow(GPIO1, GPIO_BIT0);
-        }
-        else if (strstr((const char *)rxbuf, "GOO"))
-        {
-            TaskPST[4].Task_Enable_Flag = true;
-            TaskVST.menu_wtc = 3;
-        }
-            rcvLen = 0;
+        rcvLen = 0;
         isRecvEnd = 0;
     }
 }

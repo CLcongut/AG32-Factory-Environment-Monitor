@@ -16,8 +16,8 @@ TaskPollingStruct TaskPST[] = {
     {false, 500, false, T_Memu_Switch},
     {true, 100, false, T_Key_Scan},
     {true, 500, false, T_Condition_Judge},
-    {false, 2000, false, T_Transmit_Data},
-    {false, 500, false, T_Receive_Data},
+    {true, 2000, false, T_Transmit_Data},
+    {true, 500, false, T_Receive_Data},
 };
 
 #ifndef JUDGE_IN_WHILE
