@@ -2,6 +2,7 @@
 #include "key.h"
 
 uint8_t Key_Code_Past;
+uint8_t press_time;
 
 #ifdef KEY_INT
 uint8_t Key_Code_Now;
@@ -75,6 +76,16 @@ uint8_t Key_Scan(void)
             Key_Code_Past = Key_Code;
             return 0;
         }
+        else if (Key_Code_Past == Key_Code)
+        {
+            press_time++;
+            if (press_time >= 200)
+            {
+                press_time = 200;
+                return Key_Code + 10;
+            }
+            return 0;
+        }
         else
         {
             return 0;
@@ -85,6 +96,7 @@ uint8_t Key_Scan(void)
     Key_Code_Past = 0;
 #endif
 #ifdef RISING__TRAG
+    press_time = 0;
     uint8_t Key_Code_Temp = Key_Code_Past;
     Key_Code_Past = 0;
     return Key_Code_Temp;

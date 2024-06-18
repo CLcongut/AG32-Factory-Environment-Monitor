@@ -29,6 +29,7 @@ extern TaskValueStruct TaskVST;
 
 typedef struct Task_Threshold_Struct
 {
+    uint8_t ts_switch;
     uint8_t temp_V;
     uint8_t humi_V;
     uint8_t air_V;

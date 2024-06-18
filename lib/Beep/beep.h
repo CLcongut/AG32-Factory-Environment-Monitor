@@ -9,5 +9,7 @@ void Beep_Init(void);
 void Beep_ON(void);
 void Beep_OFF(void);
 void Beep_TOGGLE(void);
+void Beep_ON_Bits(uint8_t route_bits);
+void Beep_OFF_Bits(uint8_t route_bits);
 
 #endif

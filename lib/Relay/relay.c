@@ -54,3 +54,23 @@ void Relay2_TOGGLE(void)
         GPIO_SetHigh(RELAY2_PORT, RELAY2_BITS);
     }
 }
+
+void Relay1_ON_Bits(uint8_t route_bits)
+{
+    GPIO_SetHigh(RELAY1_PORT, route_bits);
+}
+
+void Relay2_ON_Bits(uint8_t route_bits)
+{
+    GPIO_SetHigh(RELAY2_PORT, route_bits);
+}
+
+void Relay1_OFF_Bits(uint8_t route_bits)
+{
+    GPIO_SetLow(RELAY1_PORT, route_bits);
+}
+
+void Relay2_OFF_Bits(uint8_t route_bits)
+{
+    GPIO_SetLow(RELAY2_PORT, route_bits);
+}

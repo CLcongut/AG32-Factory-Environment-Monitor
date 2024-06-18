@@ -17,6 +17,7 @@
         "relay.h": "c",
         "step_motor.h": "c",
         "gui.h": "c",
-        "usart.h": "c"
+        "usart.h": "c",
+        "device.h": "c"
     }
 }

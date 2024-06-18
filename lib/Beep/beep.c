@@ -29,3 +29,13 @@ void Beep_TOGGLE(void)
         GPIO_SetHigh(BEEP_PORT, BEEP_BITS);
     }
 }
+
+void Beep_ON_Bits(uint8_t route_bits)
+{
+    GPIO_SetHigh(BEEP_PORT, route_bits);
+}
+
+void Beep_OFF_Bits(uint8_t route_bits)
+{
+    GPIO_SetLow(BEEP_PORT, route_bits);
+}

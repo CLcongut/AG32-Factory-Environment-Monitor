@@ -12,6 +12,7 @@
 #include "gui.h"
 #include "HB_GPTimer.h"
 #include "key.h"
+#include "route.h"
 
 #include "lcd.h"
 #include "lcd_init.h"
@@ -19,10 +20,6 @@
 #include "mq135_air_sensor.h"
 #include "mq2_fumes_sensor.h"
 #include "fire_sensor.h"
-
-#include "beep.h"
-#include "relay.h"
-#include "step_motor.h"
 
 #define MIN_IRQ_PRIORITY 1
 #define MAX_IRQ_PRIORITY PLIC_MAX_PRIORITY

@@ -6,6 +6,7 @@
 #include "gui.h"
 #include "HB_GPTimer.h"
 #include "key.h"
+#include "route.h"
 
 #include "lcd.h"
 #include "lcd_init.h"
@@ -13,10 +14,6 @@
 #include "mq135_air_sensor.h"
 #include "mq2_fumes_sensor.h"
 #include "fire_sensor.h"
-
-#include "beep.h"
-#include "relay.h"
-#include "step_motor.h"
 
 int main(void)
 {
@@ -27,11 +24,13 @@ int main(void)
     Gui_Init();
     dht11_Init();
     FireSS_Init();
-    Beep_Init();
+    Device_Init();
 
     Task_Init();
     // Gui_Load();
-    Gui_Menu_2();
+    // Gui_Menu_2();
+    Gui_Menu_3();
+    TaskVST.menu_wtc = 3;
     while (1)
     {
 #ifdef JUDGE_IN_WHILE

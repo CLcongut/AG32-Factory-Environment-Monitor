@@ -15,7 +15,7 @@ TaskPollingStruct TaskPST[] = {
     {false, 1000, false, T_FireSS_Read},
     {false, 500, false, T_Memu_Switch},
     {true, 100, false, T_Key_Scan},
-    {false, 500, false, T_Condition_Judge},
+    {true, 500, false, T_Condition_Judge},
     {false, 2000, false, T_Transmit_Data},
     {false, 500, false, T_Receive_Data},
 };
@@ -54,7 +54,8 @@ void Task_Init(void)
 {
     TaskVST.task_now = 0;
     TaskVST.task_cnt = sizeof(TaskPST) / sizeof(TaskPST[0]);
-    TaskVST.menu_wtc = 1;
+    TaskTST.air_V = 1;
+    TaskTST.fume_V = 1;
 }
 
 void Task_System(void)
@@ -104,15 +105,29 @@ void T_FireSS_Read(void)
 
 void T_Condition_Judge(void)
 {
-    if (TaskVST.mq2_buf[0] > TaskTST.fume_V ||
-        TaskVST.mq135_buf[0] > TaskTST.air_V ||
-        TaskVST.fire_curr_state == true)
+    if (TaskVST.mq2_buf[0] > TaskTST.fume_V)
     {
-        Beep_ON();
+        Output1_Route(1);
     }
     else
     {
-        Beep_OFF();
+        Output1_Route(0);
+    }
+    if (TaskVST.mq135_buf[0] > TaskTST.air_V)
+    {
+        Output2_Route(1);
+    }
+    else
+    {
+        Output2_Route(0);
+    }
+    if (TaskVST.fire_curr_state == true)
+    {
+        Output3_Route(1);
+    }
+    else
+    {
+        Output3_Route(0);
     }
 }
 
@@ -143,14 +158,13 @@ void T_Memu_Switch(void)
         TaskPST[1].Task_Enable_Flag = false;
         TaskPST[2].Task_Enable_Flag = false;
         TaskPST[3].Task_Enable_Flag = false;
+        TaskPST[0].Task_Status_Flag = false;
+        TaskPST[1].Task_Status_Flag = false;
+        TaskPST[2].Task_Status_Flag = false;
         Gui_Menu_2();
         break;
 
     case 3:
-        TaskPST[0].Task_Enable_Flag = false;
-        TaskPST[1].Task_Enable_Flag = false;
-        TaskPST[2].Task_Enable_Flag = false;
-        TaskPST[3].Task_Enable_Flag = false;
         Gui_Menu_3();
         break;
     }
@@ -160,27 +174,131 @@ void T_Memu_Switch(void)
 void T_Key_Scan(void)
 {
     uint8_t Key_Num = Key_Scan();
-    switch (Key_Num)
+    if (TaskVST.menu_wtc == 1)
     {
-    case 1:
-        TaskPST[4].Task_Enable_Flag = true;
-        if (++TaskVST.menu_wtc > 3)
-            TaskVST.menu_wtc = 1;
-        break;
-
-    case 2:
-        break;
-
-    case 3:
-        GUI_TS_Progress(++test_value1, ++test_value2);
-        break;
-
-    case 4:
-        GUI_TS_Progress(--test_value1, --test_value2);
-        break;
-
-    default:
-        break;
+        if (Key_Num == 1)
+        {
+            TaskVST.menu_wtc++;
+            TaskPST[4].Task_Enable_Flag = true;
+        }
+        Key_Num = 0;
     }
+    if (TaskVST.menu_wtc == 2)
+    {
+        switch (Key_Num)
+        {
+        case 1:
+            TaskVST.menu_wtc++;
+            TaskTST.ts_switch = 0;
+            TaskPST[4].Task_Enable_Flag = true;
+            break;
+
+        case 2:
+            if (++TaskTST.ts_switch > 2)
+                TaskTST.ts_switch = 1;
+            GUI_TS_Progress(TaskTST.ts_switch, TaskTST.air_V, TaskTST.fume_V);
+            break;
+
+        case 3:
+            if (TaskTST.ts_switch == 1)
+            {
+                if (++TaskTST.air_V > 99)
+                {
+                    TaskTST.air_V = 99;
+                }
+            }
+            else if (TaskTST.ts_switch == 2)
+            {
+                if (++TaskTST.fume_V > 99)
+                {
+                    TaskTST.fume_V = 99;
+                }
+            }
+
+            GUI_TS_Progress(TaskTST.ts_switch, TaskTST.air_V, TaskTST.fume_V);
+            break;
+
+        case 4:
+            if (TaskTST.ts_switch == 1)
+            {
+                if (--TaskTST.air_V < 1)
+                {
+                    TaskTST.air_V = 1;
+                }
+            }
+            else if (TaskTST.ts_switch == 2)
+            {
+                if (--TaskTST.fume_V < 1)
+                {
+                    TaskTST.fume_V = 1;
+                }
+            }
+            GUI_TS_Progress(TaskTST.ts_switch, TaskTST.air_V, TaskTST.fume_V);
+            break;
+
+        case 13:
+            if (TaskTST.ts_switch == 1)
+            {
+                if (++TaskTST.air_V > 99)
+                {
+                    TaskTST.air_V = 99;
+                }
+            }
+            else if (TaskTST.ts_switch == 2)
+            {
+                if (++TaskTST.fume_V > 99)
+                {
+                    TaskTST.fume_V = 99;
+                }
+            }
+
+            GUI_TS_Progress(TaskTST.ts_switch, TaskTST.air_V, TaskTST.fume_V);
+            break;
+
+        case 14:
+            if (TaskTST.ts_switch == 1)
+            {
+                if (--TaskTST.air_V < 1)
+                {
+                    TaskTST.air_V = 1;
+                }
+            }
+            else if (TaskTST.ts_switch == 2)
+            {
+                if (--TaskTST.fume_V < 1)
+                {
+                    TaskTST.fume_V = 1;
+                }
+            }
+            GUI_TS_Progress(TaskTST.ts_switch, TaskTST.air_V, TaskTST.fume_V);
+            break;
+        }
+        Key_Num = 0;
+    }
+
+    if (TaskVST.menu_wtc == 3)
+    {
+        switch (Key_Num)
+        {
+        case 1:
+            TaskVST.menu_wtc = 1;
+            TaskPST[4].Task_Enable_Flag = true;
+            break;
+
+        case 2:
+
+            break;
+
+        case 3:
+
+            break;
+
+        case 4:
+
+            break;
+        }
+        Key_Num = 0;
+    }
+
     // LCD_ShowIntNum(0, 120, Key_Scan(), 2, BLACK, WHITE, 12);
 }

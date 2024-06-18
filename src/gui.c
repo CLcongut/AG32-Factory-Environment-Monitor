@@ -177,20 +177,48 @@ void Gui_Menu_2(void)
 
     LCD_DrawRectangle(FUME_TS_X_POS - 2, FUME_TS_Y_POS + 2, FUME_TS_X_POS + 11, FUME_TS_Y_POS - 101, BLACK);
     LCD_ShowChinese(FUME_TS_X_POS - 10, FUME_TS_Y_POS + 4, "ÑÌÎí", BLACK, WHITE, 16, 0);
-    GUI_TS_Progress(0, 0);
+    GUI_TS_Progress(0, TaskTST.air_V, TaskTST.fume_V);
 }
 
-void GUI_TS_Progress(uint8_t air_ts, uint8_t fume_ts)
+void GUI_TS_Progress(uint8_t ts_wtc, uint8_t air_ts, uint8_t fume_ts)
 {
-    LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts - 1, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts - 1, WHITE);
-    LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts, BLACK);
-    LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, BLACK, WHITE, 12);
-    LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts - 1, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts - 1, WHITE);
-    LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts, BLACK);
-    LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, BLACK, WHITE, 12);
+    if (ts_wtc == 1)
+    {
+        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts - 1, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts - 1, WHITE);
+        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts, BLACK);
+        LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, RED, WHITE, 12);
+        LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, BLACK, WHITE, 12);
+    }
+    else if (ts_wtc == 2)
+    {
+        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts - 1, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts - 1, WHITE);
+        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts, BLACK);
+        LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, RED, WHITE, 12);
+        LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, BLACK, WHITE, 12);
+    }
+    else
+    {
+        for (uint8_t i = 0; i < air_ts; i++)
+        {
+            LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - i, AIR_TS_X_POS + 10, AIR_TS_Y_POS - i, BLACK);
+        }
+        for (uint8_t i = 0; i < fume_ts; i++)
+        {
+            LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - i, FUME_TS_X_POS + 10, FUME_TS_Y_POS - i, BLACK);
+        }
+        LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, BLACK, WHITE, 12);
+        LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, BLACK, WHITE, 12);
+    }
 }
+
+#define null
 
 void Gui_Menu_3(void)
 {
-    LCD_Fill(0, 0, LCD_W, LCD_H, BLUE);
+    LCD_Fill(0, 0, LCD_W, LCD_H, WHITE);
+    LCD_ShowChinese(4, 2, "²Ëµ¥²Ëµ¥²Ëµ¥²Ëµ¥²Ëµ¥", BLACK, WHITE, 12, 0);
+}
+
+void GUI_Route_Control(void)
+{
 }

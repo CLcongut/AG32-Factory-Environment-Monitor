@@ -10,6 +10,6 @@ void GUI_Show_Fume(void);
 void GUI_Show_Fire(bool fireState);
 void Gui_Menu_2(void);
 void Gui_Menu_3(void);
-void GUI_TS_Progress(uint8_t air_ts, uint8_t fume_ts);
+void GUI_TS_Progress(uint8_t ts_wtc, uint8_t air_ts, uint8_t fume_ts);
 
 #endif

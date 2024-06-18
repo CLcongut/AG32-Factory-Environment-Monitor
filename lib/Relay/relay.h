@@ -15,5 +15,9 @@ void Relay1_OFF(void);
 void Relay2_OFF(void);
 void Relay1_TOGGLE(void);
 void Relay2_TOGGLE(void);
+void Relay1_ON_Bits(uint8_t route_bits);
+void Relay2_ON_Bits(uint8_t route_bits);
+void Relay1_OFF_Bits(uint8_t route_bits);
+void Relay2_OFF_Bits(uint8_t route_bits);
 
 #endif
