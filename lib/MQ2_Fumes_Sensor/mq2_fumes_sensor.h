@@ -1,7 +1,7 @@
 #ifndef MQ2_FUMES_SENSOR_H
 #define MQ2_FUMES_SENSOR_H
 
-#define MQ2_CHANNEL ADC_CHANNEL11
+#define MQ2_CHANNEL ADC_CHANNEL3
 #define MQ2_ADC ADC0
 
 void MQ2FS_Init(void);

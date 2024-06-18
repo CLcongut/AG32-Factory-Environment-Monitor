@@ -172,27 +172,29 @@ void Gui_Menu_2(void)
     LCD_ShowChinese(4, 22, "值", BLACK, WHITE, 16, 0);
     LCD_ShowChinese(4, 40, "设", BLACK, WHITE, 16, 0);
     LCD_ShowChinese(4, 58, "定", BLACK, WHITE, 16, 0);
-    LCD_DrawRectangle(AIR_TS_X_POS - 2, AIR_TS_Y_POS + 2, AIR_TS_X_POS + 11, AIR_TS_Y_POS - 101, BLACK);
+    LCD_DrawRectangle(AIR_TS_X_POS - 2, AIR_TS_Y_POS + 2, AIR_TS_X_POS + 11, AIR_TS_Y_POS - 100, BLACK);
     LCD_ShowChinese(AIR_TS_X_POS - 10, AIR_TS_Y_POS + 4, "空气", BLACK, WHITE, 16, 0);
 
-    LCD_DrawRectangle(FUME_TS_X_POS - 2, FUME_TS_Y_POS + 2, FUME_TS_X_POS + 11, FUME_TS_Y_POS - 101, BLACK);
+    LCD_DrawRectangle(FUME_TS_X_POS - 2, FUME_TS_Y_POS + 2, FUME_TS_X_POS + 11, FUME_TS_Y_POS - 100, BLACK);
     LCD_ShowChinese(FUME_TS_X_POS - 10, FUME_TS_Y_POS + 4, "烟雾", BLACK, WHITE, 16, 0);
     GUI_TS_Progress(0, TaskTST.air_V, TaskTST.fume_V);
+    LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS, AIR_TS_X_POS + 10, AIR_TS_Y_POS, BLACK);
+    LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS, FUME_TS_X_POS + 10, FUME_TS_Y_POS, BLACK);
 }
 
 void GUI_TS_Progress(uint8_t ts_wtc, uint8_t air_ts, uint8_t fume_ts)
 {
     if (ts_wtc == 1)
     {
-        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts - 1, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts - 1, WHITE);
-        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts, BLACK);
+        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts, WHITE);
+        LCD_DrawLine(AIR_TS_X_POS, AIR_TS_Y_POS - air_ts + 1, AIR_TS_X_POS + 10, AIR_TS_Y_POS - air_ts + 1, BLACK);
         LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, RED, WHITE, 12);
         LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, BLACK, WHITE, 12);
     }
     else if (ts_wtc == 2)
     {
-        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts - 1, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts - 1, WHITE);
-        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts, BLACK);
+        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts, WHITE);
+        LCD_DrawLine(FUME_TS_X_POS, FUME_TS_Y_POS - fume_ts + 1, FUME_TS_X_POS + 10, FUME_TS_Y_POS - fume_ts + 1, BLACK);
         LCD_ShowIntNum(FUME_TS_X_POS, FUME_TS_Y_POS - 115, fume_ts, 2, RED, WHITE, 12);
         LCD_ShowIntNum(AIR_TS_X_POS, AIR_TS_Y_POS - 115, air_ts, 2, BLACK, WHITE, 12);
     }

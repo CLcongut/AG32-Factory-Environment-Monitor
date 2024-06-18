@@ -9,7 +9,7 @@ if { [info exists USB0_MODE] } {
   set_config -loc 0 1 3 CFG_PULLDN_ENB 1'b0
 }
 
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_79
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_80
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_81
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_82
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_45
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_43
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_42
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PIN_41
