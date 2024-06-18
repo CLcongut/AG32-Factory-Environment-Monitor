@@ -1,0 +1,3 @@
+每次新建工程连接MQTT时记得改pubsubclient.h里面的
+MQTT_MAX_PACKET_SIZE 1024
+MQTT_KEEPALIVE 64

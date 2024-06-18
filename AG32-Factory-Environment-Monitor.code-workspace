@@ -1,8 +1,7 @@
 {
 	"folders": [
 		{
-			"name": "ESP32_MQTT",
-			"path": "../ESP32_MQTT"
+			"path": "."
 		}
 	],
 	"settings": {
@@ -23,7 +22,9 @@
 			"beep.h": "c",
 			"relay.h": "c",
 			"step_motor.h": "c",
-			"gui.h": "c"
+			"gui.h": "c",
+			"usart.h": "c",
+			"device.h": "c"
 		}
 	}
 }
