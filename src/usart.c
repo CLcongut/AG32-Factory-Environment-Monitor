@@ -41,10 +41,7 @@ void S_USART_Init(void)
     UART_SetRxIntFifoLevel(UART1, UART_INT_FIFO_HALF); // 配置FIFO收多少字节时产生收中断
     INT_EnableIRQ(UART1_IRQn, UART_PRIORITY);
 
-    UART_Send(UART1, "test idleIrq\r\n", strlen("test idleIrq\r\n"));
-    // SYS_EnableAPBClock(APB_MASK_GPIO1);
-    // GPIO_SetOutput(GPIO1, GPIO_BIT0);
-    // GPIO_SetLow(GPIO1, GPIO_BIT0);
+    // UART_Send(UART1, "test idleIrq\r\n", strlen("test idleIrq\r\n"));
 }
 
 uint8_t CheckSum(uint8_t *Buf, uint8_t Len)
@@ -75,8 +72,8 @@ void S_USART_Trans(void)
     txbuf[7] = TaskVST.mq2_buf[0];   // 烟雾整数
     txbuf[8] = TaskVST.fire_curr_state;
     txbuf[9] = TaskVST.power;
-    txbuf[10] = TaskTST.air_V;
-    txbuf[11] = TaskTST.fume_V;
+    txbuf[10] = TaskTST.ts_temp[0];
+    txbuf[11] = TaskTST.ts_temp[1];
     uint8_t *pcheck = txbuf + 4;
     txbuf[12] = CheckSum(pcheck, DATACNT);
     UART_Send(UART1, txbuf, DATALEN);
@@ -86,12 +83,23 @@ void S_USART_Recev(void)
 {
     if (isRecvEnd == 1)
     {
-        UART_Send(UART1, rxbuf, rcvLen);
-        UART_Send(UART1, "\r\n", strlen("\r\n"));
-        if (rxbuf[2] == 0x02)
+        // UART_Send(UART1, rxbuf, rcvLen);
+        // UART_Send(UART1, "\r\n", strlen("\r\n"));
+        if (rxbuf[0] == 0xAA && rxbuf[1] == 0x39)
         {
-            TaskTST.air_V = rxbuf[4];
-            TaskTST.fume_V = rxbuf[5];
+            if (rxbuf[2] == 0x02)
+            {
+                TaskTST.air_V = rxbuf[4];
+                TaskTST.fume_V = rxbuf[5];
+            }
+            else if (rxbuf[2] == 0x03)
+            {
+                TaskTST.air_V = rxbuf[4];
+                TaskTST.fume_V = rxbuf[5];
+                TaskTST.ts_temp[0] = TaskTST.air_V;
+                TaskTST.ts_temp[1] = TaskTST.fume_V;
+                TaskPST[7].Task_Enable_Flag = true;
+            }
         }
         rcvLen = 0;
         isRecvEnd = 0;

@@ -1,6 +1,6 @@
 #include "main.h"
 
-uint8_t routearray[9] = {0, 0, 0, 0, 0, 0, 1, 1, 1};
+uint8_t routearray[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};
 
 void Output1_Route(bool enable1)
 {

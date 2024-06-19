@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+// #define MENU3ENABLE
+
 typedef struct Task_Polling_Struct
 {
     bool Task_Enable_Flag;
@@ -35,6 +37,7 @@ typedef struct Task_Threshold_Struct
     uint8_t humi_V;
     uint8_t air_V;
     uint8_t fume_V;
+    uint8_t ts_temp[2];
 } TaskThresholdStruct;
 
 extern TaskThresholdStruct TaskTST;

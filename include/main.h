@@ -2,7 +2,7 @@
 #define MAIN_H
 
 /*是否使用主循环判断间隔时间，关闭则为每次定时器中断时判断*/
-#define JUDGE_IN_WHILE
+// #define JUDGE_IN_WHILE
 
 #include "board.h"
 #include "main.h"

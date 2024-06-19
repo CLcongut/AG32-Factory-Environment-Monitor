@@ -213,8 +213,7 @@ void GUI_TS_Progress(uint8_t ts_wtc, uint8_t air_ts, uint8_t fume_ts)
     }
 }
 
-#define null
-
+#ifdef MENU3ENABLE
 void Gui_Menu_3(void)
 {
     LCD_Fill(0, 0, LCD_W, LCD_H, WHITE);
@@ -224,3 +223,4 @@ void Gui_Menu_3(void)
 void GUI_Route_Control(void)
 {
 }
+#endif

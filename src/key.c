@@ -4,6 +4,8 @@
 uint8_t Key_Code_Past;
 uint8_t press_time;
 
+// #define KEYDEBUG
+
 #ifdef KEY_INT
 uint8_t Key_Code_Now;
 void GPIO2_isr(void)
@@ -40,7 +42,9 @@ uint8_t Key_Scan(void)
     if (Key_Code_Raw != 0x0F)
     {
         uint8_t Key_Code;
+#ifdef KEYDEBUG
         UART_SendCh(UART1, Key_Code_Raw);
+#endif
         switch (Key_Code_Raw)
         {
         case 0x0E:
@@ -79,9 +83,9 @@ uint8_t Key_Scan(void)
         else if (Key_Code_Past == Key_Code)
         {
             press_time++;
-            if (press_time >= 200)
+            if (press_time >= 7)
             {
-                press_time = 200;
+                press_time = 7;
                 return Key_Code + 10;
             }
             return 0;

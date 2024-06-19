@@ -9,14 +9,14 @@ TaskValueStruct TaskVST;
 TaskThresholdStruct TaskTST;
 
 TaskPollingStruct TaskPST[] = {
-    {false, 1000, false, T_DHT11_Read},
-    {false, 1000, false, T_MQ135AS_Read},
-    {false, 1000, false, T_MQ2FS_Read},
-    {false, 1000, false, T_FireSS_Read},
+    {true, 1000, false, T_DHT11_Read},
+    {true, 1000, false, T_MQ135AS_Read},
+    {true, 1000, false, T_MQ2FS_Read},
+    {true, 1000, false, T_FireSS_Read},
     {false, 500, false, T_Memu_Switch},
     {true, 100, false, T_Key_Scan},
     {true, 500, false, T_Condition_Judge},
-    {true, 2000, false, T_Transmit_Data},
+    {false, 3000, false, T_Transmit_Data},
     {true, 500, false, T_Receive_Data},
 };
 
@@ -164,9 +164,11 @@ void T_Memu_Switch(void)
         Gui_Menu_2();
         break;
 
+#ifdef MENU3ENABLE
     case 3:
         Gui_Menu_3();
         break;
+#endif
     }
     TaskPST[4].Task_Enable_Flag = false;
 }
@@ -188,9 +190,15 @@ void T_Key_Scan(void)
         switch (Key_Num)
         {
         case 1:
+#ifndef MENU3ENABLE
+            TaskVST.menu_wtc = 1;
+#elif defined MENU3ENABLE
             TaskVST.menu_wtc++;
+#endif
             TaskTST.ts_switch = 0;
             TaskPST[4].Task_Enable_Flag = true;
+            TaskTST.ts_temp[0] = TaskTST.air_V;
+            TaskTST.ts_temp[1] = TaskTST.fume_V;
             break;
 
         case 2:
@@ -275,7 +283,7 @@ void T_Key_Scan(void)
         }
         Key_Num = 0;
     }
-
+#ifdef MENU3ENABLE
     if (TaskVST.menu_wtc == 3)
     {
         switch (Key_Num)
@@ -299,6 +307,6 @@ void T_Key_Scan(void)
         }
         Key_Num = 0;
     }
-
+#endif
     // LCD_ShowIntNum(0, 120, Key_Scan(), 2, BLACK, WHITE, 12);
 }

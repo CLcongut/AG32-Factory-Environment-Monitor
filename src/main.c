@@ -27,10 +27,10 @@ int main(void)
     Device_Init();
 
     Task_Init();
-    // Gui_Load();
+    Gui_Load();
     // Gui_Menu_2();
-    Gui_Menu_3();
-    TaskVST.menu_wtc = 3;
+    // Gui_Menu_3();
+    TaskVST.menu_wtc = 1;
     while (1)
     {
 #ifdef JUDGE_IN_WHILE
