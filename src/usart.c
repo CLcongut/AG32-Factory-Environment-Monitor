@@ -1,11 +1,13 @@
 #include "main.h"
 #include "usart.h"
 
-#define HEAD 0xAA
-#define ADDRESS 0x37
+#define ADDRESS_T1 9238
+#define ADDRESS_T2 9239
+#define ADDRESS_R1 9237
+#define CHANNEL 19
 #define CMD 0x01
 #define DATACNT 8
-#define DATALEN DATACNT + 5
+#define DATALEN DATACNT + 6
 
 volatile char isRecvEnd = 0; // 是否收取idle完整一包
 volatile char rcvLen = 0;    // rx收取的包的长度
@@ -62,20 +64,21 @@ uint8_t CheckSum(uint8_t *Buf, uint8_t Len)
 
 void S_USART_Trans(void)
 {
-    txbuf[0] = HEAD;
-    txbuf[1] = ADDRESS;
-    txbuf[2] = CMD;
-    txbuf[3] = DATACNT;
-    txbuf[4] = TaskVST.dht11_buf[2]; // 温度整数
-    txbuf[5] = TaskVST.dht11_buf[0]; // 湿度整数
-    txbuf[6] = TaskVST.mq135_buf[0]; // 空气整数
-    txbuf[7] = TaskVST.mq2_buf[0];   // 烟雾整数
-    txbuf[8] = TaskVST.fire_curr_state;
-    txbuf[9] = TaskVST.power;
-    txbuf[10] = TaskTST.ts_temp[0];
-    txbuf[11] = TaskTST.ts_temp[1];
+    txbuf[0] = (uint8_t)(ADDRESS_R1 >> 8);
+    txbuf[1] = (uint8_t)ADDRESS_R1;
+    txbuf[2] = CHANNEL;
+    txbuf[3] = CMD;
+    txbuf[4] = DATACNT;
+    txbuf[5] = TaskVST.dht11_buf[2]; // 温度整数
+    txbuf[6] = TaskVST.dht11_buf[0]; // 湿度整数
+    txbuf[7] = TaskVST.mq135_buf[0]; // 空气整数
+    txbuf[8] = TaskVST.mq2_buf[0];   // 烟雾整数
+    txbuf[9] = TaskVST.fire_curr_state;
+    txbuf[10] = TaskVST.power;
+    txbuf[11] = TaskTST.ts_temp[0];
+    txbuf[12] = TaskTST.ts_temp[1];
     uint8_t *pcheck = txbuf + 4;
-    txbuf[12] = CheckSum(pcheck, DATACNT);
+    txbuf[13] = CheckSum(pcheck, DATACNT);
     UART_Send(UART1, txbuf, DATALEN);
 }
 
@@ -85,21 +88,19 @@ void S_USART_Recev(void)
     {
         // UART_Send(UART1, rxbuf, rcvLen);
         // UART_Send(UART1, "\r\n", strlen("\r\n"));
-        if (rxbuf[0] == 0xAA && rxbuf[1] == 0x39)
+        if (rxbuf[0] == 0x02)
         {
-            if (rxbuf[2] == 0x02)
-            {
-                TaskTST.air_V = rxbuf[4];
-                TaskTST.fume_V = rxbuf[5];
-            }
-            else if (rxbuf[2] == 0x03)
-            {
-                TaskTST.air_V = rxbuf[4];
-                TaskTST.fume_V = rxbuf[5];
-                TaskTST.ts_temp[0] = TaskTST.air_V;
-                TaskTST.ts_temp[1] = TaskTST.fume_V;
-                TaskPST[7].Task_Enable_Flag = true;
-            }
+            TaskTST.air_V = rxbuf[2];
+            TaskTST.fume_V = rxbuf[3];
+        }
+        else if (rxbuf[0] == 0x03)
+        {
+            TaskTST.air_V = rxbuf[2];
+            TaskTST.fume_V = rxbuf[3];
+            TaskTST.ts_temp[0] = TaskTST.air_V;
+            TaskTST.ts_temp[1] = TaskTST.fume_V;
+            TaskPST[6].Task_Enable_Flag = true;
+            TaskPST[7].Task_Enable_Flag = true;
         }
         rcvLen = 0;
         isRecvEnd = 0;

@@ -15,7 +15,7 @@ TaskPollingStruct TaskPST[] = {
     {true, 1000, false, T_FireSS_Read},
     {false, 500, false, T_Memu_Switch},
     {true, 100, false, T_Key_Scan},
-    {true, 500, false, T_Condition_Judge},
+    {false, 500, false, T_Condition_Judge},
     {false, 3000, false, T_Transmit_Data},
     {true, 500, false, T_Receive_Data},
 };

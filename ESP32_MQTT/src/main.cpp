@@ -47,16 +47,26 @@
 #define postClass_NAME7 "FumeAlarm"      // 烟雾报警阈值
 #define postClass_NAME8 "power"          // 电池电量
 
+#define postClass_NAME1_2 "EnvTemperature2" // 环境温度
+#define postClass_NAME2_2 "EnvHumidity2"    // 环境湿度
+#define postClass_NAME3_2 "EnvAir2"         // 环境空气质量
+#define postClass_NAME4_2 "EnvFume2"        // 环境烟雾浓度
+#define postClass_NAME5_2 "FlameState2"     // 火焰状态
+
 /********************************************************************************
  * << 结束
  */
-#define HEAD 0xAA
-#define ADDRESS 0x39
-#define CMD 0x02
+#define ADDRESS_T1 9238
+#define ADDRESS_T2 9239
+#define ADDRESS_R1 9237
+#define CHANNEL 19
+#define CMD1 0x02
+#define CMD2 0x03
 #define DATACNT 2
-#define DATALEN 7
+#define DATALEN DATACNT + 6
 
 uint8_t txbuf[DATALEN];
+uint8_t post_target_switch = 0;
 
 uint64_t lastMs;
 
@@ -113,46 +123,101 @@ void mqttCheckConnect()
 }
 
 /*MQTT发布*/
-void mqttIntervalPost()
+void mqttIntervalPost(uint8_t post_swt)
 {
   char param[32];
   char jsonBuf[128];
 
-  /*温度发送*/
-  sprintf(param, "{\"" postClass_NAME1 "\":%d}", Receive_VS.temp);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*湿度发送*/
-  sprintf(param, "{\"" postClass_NAME2 "\":%d}", Receive_VS.humi);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*空气质量发送*/
-  sprintf(param, "{\"" postClass_NAME3 "\":%d}", Receive_VS.airt);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*烟雾浓度发送*/
-  sprintf(param, "{\"" postClass_NAME4 "\":%d}", Receive_VS.fume);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*火焰发送*/
-  sprintf(param, "{\"" postClass_NAME5 "\":%d}", Receive_VS.fire);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*空气质量阈值发送*/
-  sprintf(param, "{\"" postClass_NAME6 "\":%d}", Receive_VS.air_ts);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*烟雾浓度阈值发送*/
-  sprintf(param, "{\"" postClass_NAME7 "\":%d}", Receive_VS.fume_ts);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  /*电池电量发送*/
-  sprintf(param, "{\"" postClass_NAME8 "\":%d}", Receive_VS.power);
-  sprintf(jsonBuf, mqtt_pub_FORMAT, param);
-  client.publish(mqtt_pub_TOPIC, jsonBuf);
-  oled.clearBuffer();
-  oled.drawStr(0, 20, "Data Posted");
-  oled.sendBuffer();
+  if (post_swt == 1)
+  {
+    /*温度发送*/
+    sprintf(param, "{\"" postClass_NAME1 "\":%d}", Receive_VS.temp);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*湿度发送*/
+    sprintf(param, "{\"" postClass_NAME2 "\":%d}", Receive_VS.humi);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*空气质量发送*/
+    sprintf(param, "{\"" postClass_NAME3 "\":%d}", Receive_VS.airt);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*烟雾浓度发送*/
+    sprintf(param, "{\"" postClass_NAME4 "\":%d}", Receive_VS.fume);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*火焰发送*/
+    sprintf(param, "{\"" postClass_NAME5 "\":%d}", Receive_VS.fire);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*空气质量阈值发送*/
+    sprintf(param, "{\"" postClass_NAME6 "\":%d}", Receive_VS.air_ts);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*烟雾浓度阈值发送*/
+    sprintf(param, "{\"" postClass_NAME7 "\":%d}", Receive_VS.fume_ts);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*电池电量发送*/
+    sprintf(param, "{\"" postClass_NAME8 "\":%d}", Receive_VS.power);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+
+    sprintf(param, "{\"" postClass_NAME1 "\":%d}", Receive_VS.temp);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*湿度发送*/
+    sprintf(param, "{\"" postClass_NAME2 "\":%d}", Receive_VS.humi);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*空气质量发送*/
+    sprintf(param, "{\"" postClass_NAME3 "\":%d}", Receive_VS.airt);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*烟雾浓度发送*/
+    sprintf(param, "{\"" postClass_NAME4 "\":%d}", Receive_VS.fume);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*火焰发送*/
+    sprintf(param, "{\"" postClass_NAME5 "\":%d}", Receive_VS.fire);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    oled.clearBuffer();
+    oled.drawStr(0, 20, "Data Posted");
+    oled.drawStr(0, 40, "Terminal 1");
+    oled.sendBuffer();
+    post_target_switch = 0;
+  }
+  else if (post_swt == 2)
+  {
+    /*温度发送*/
+    sprintf(param, "{\"" postClass_NAME1 "\":%d}", Receive_VS.temp);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*湿度发送*/
+    sprintf(param, "{\"" postClass_NAME2 "\":%d}", Receive_VS.humi);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*空气质量发送*/
+    sprintf(param, "{\"" postClass_NAME3 "\":%d}", Receive_VS.airt);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*烟雾浓度发送*/
+    sprintf(param, "{\"" postClass_NAME4 "\":%d}", Receive_VS.fume);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    /*火焰发送*/
+    sprintf(param, "{\"" postClass_NAME5 "\":%d}", Receive_VS.fire);
+    sprintf(jsonBuf, mqtt_pub_FORMAT, param);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    client.publish(mqtt_pub_TOPIC, jsonBuf);
+    oled.clearBuffer();
+    oled.drawStr(0, 20, "Data Posted");
+    oled.drawStr(0, 40, "Terminal 2");
+    oled.sendBuffer();
+    post_target_switch = 0;
+  }
 }
 
 /*和校验*/
@@ -192,7 +257,7 @@ void callback(char *topic, byte *payload, unsigned int length)
   // DynamicJsonDocument params = doc["params"];
   oled.clearBuffer();
   oled.drawStr(0, 20, "Get Sub Data");
-  
+
   if (doc["params"].containsKey(setClass_NAME1))
   {
     Transmit_VS.air_ts = doc["params"][setClass_NAME1];
@@ -211,14 +276,15 @@ void callback(char *topic, byte *payload, unsigned int length)
   }
   oled.sendBuffer();
 
-  txbuf[0] = HEAD;
-  txbuf[1] = ADDRESS;
-  txbuf[2] = CMD;
-  txbuf[3] = DATACNT;
-  txbuf[4] = Transmit_VS.air_ts;
-  txbuf[5] = Transmit_VS.fume_ts;
+  txbuf[0] = (uint8_t)(ADDRESS_T1 >> 8);
+  txbuf[1] = (uint8_t)ADDRESS_T1;
+  txbuf[2] = CHANNEL;
+  txbuf[3] = CMD1;
+  txbuf[4] = DATACNT;
+  txbuf[5] = Transmit_VS.air_ts;
+  txbuf[6] = Transmit_VS.fume_ts;
   uint8_t *pcheck = txbuf + 4;
-  txbuf[6] = CheckSum(pcheck, DATACNT);
+  txbuf[7] = CheckSum(pcheck, DATACNT);
   Serial2.printf((const char *)txbuf);
 }
 
@@ -234,16 +300,16 @@ void Communicate_AG32(void)
   // 检查是否接收到数据，如果接收到数据，则输出该数据
   if (inString != "")
   {
-    if (inString[2] == 0x01)
+    if (inString[0] == 0x01)
     {
-      Receive_VS.temp = inString[4];
-      Receive_VS.humi = inString[5];
-      Receive_VS.airt = inString[6];
-      Receive_VS.fume = inString[7];
-      Receive_VS.fire = inString[8];
-      Receive_VS.power = inString[9];
-      Receive_VS.air_ts = inString[10];
-      Receive_VS.fume_ts = inString[11];
+      Receive_VS.temp = inString[2];
+      Receive_VS.humi = inString[3];
+      Receive_VS.airt = inString[4];
+      Receive_VS.fume = inString[5];
+      Receive_VS.fire = inString[6];
+      Receive_VS.power = inString[7];
+      Receive_VS.air_ts = inString[8];
+      Receive_VS.fume_ts = inString[9];
       oled.clearBuffer();
       oled.drawStr(0, 20, "Get Data From");
       oled.drawStr(0, 40, "Terminal 1");
@@ -261,15 +327,26 @@ void Communicate_AG32(void)
         oled.drawStr(0, 60, "Threshold Stored");
         oled.sendBuffer();
       }
+      post_target_switch = 1;
+    }
+    else if (inString[0] == 0x04)
+    {
+      Receive_VS.temp = inString[2];
+      Receive_VS.humi = inString[3];
+      Receive_VS.airt = inString[4];
+      Receive_VS.fume = inString[5];
+      Receive_VS.fire = inString[6];
+      oled.clearBuffer();
+      oled.drawStr(0, 20, "Get Data From");
+      oled.drawStr(0, 40, "Terminal 2");
+      oled.sendBuffer();
+      post_target_switch = 2;
     }
   }
 }
 
 void setup()
 {
-  // pinMode(19, OUTPUT);
-  // digitalWrite(19, HIGH);
-
   Serial2.begin(115200);
 
   oled.begin();
@@ -296,14 +373,15 @@ void setup()
   delay(1000);
 
   // digitalWrite(19, LOW);
-  txbuf[0] = HEAD;
-  txbuf[1] = ADDRESS;
-  txbuf[2] = 0x03;
-  txbuf[3] = DATACNT;
-  txbuf[4] = Transmit_VS.air_ts;
-  txbuf[5] = Transmit_VS.fume_ts;
+  txbuf[0] = (uint8_t)(ADDRESS_T1 >> 8);
+  txbuf[1] = (uint8_t)ADDRESS_T1;
+  txbuf[2] = CHANNEL;
+  txbuf[3] = CMD2;
+  txbuf[4] = DATACNT;
+  txbuf[5] = Transmit_VS.air_ts;
+  txbuf[6] = Transmit_VS.fume_ts;
   uint8_t *pcheck = txbuf + 4;
-  txbuf[6] = CheckSum(pcheck, DATACNT);
+  txbuf[7] = CheckSum(pcheck, DATACNT);
   Serial2.printf((const char *)txbuf);
 
   oled.clearBuffer();
@@ -326,7 +404,7 @@ void loop()
   //   lastMs = millis();
   //   mqttCheckConnect();
   //   /* 上报 */
-  //   mqttIntervalPost();
+  //   mqttIntervalPost(post_target_switch);
   // }
   // client.loop();
   // delay(2000);
