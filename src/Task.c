@@ -9,15 +9,15 @@ TaskValueStruct TaskVST;
 TaskThresholdStruct TaskTST;
 
 TaskPollingStruct TaskPST[] = {
-    {true, 1000, false, T_DHT11_Read},
-    {true, 1000, false, T_MQ135AS_Read},
-    {true, 1000, false, T_MQ2FS_Read},
-    {true, 1000, false, T_FireSS_Read},
+    {false, 1000, false, T_DHT11_Read},
+    {false, 1000, false, T_MQ135AS_Read},
+    {false, 1000, false, T_MQ2FS_Read},
+    {false, 1000, false, T_FireSS_Read},
     {false, 500, false, T_Memu_Switch},
-    {true, 100, false, T_Key_Scan},
+    {false, 100, false, T_Key_Scan},
     {false, 500, false, T_Condition_Judge},
-    {false, 3000, false, T_Transmit_Data},
-    {true, 500, false, T_Receive_Data},
+    {true, 3000, false, T_Transmit_Data},
+    {false, 500, false, T_Receive_Data},
 };
 
 #ifndef JUDGE_IN_WHILE
@@ -133,7 +133,7 @@ void T_Condition_Judge(void)
 
 void T_Transmit_Data(void)
 {
-    S_USART_Trans();
+    S_USART_Fake_Trans();
 }
 
 void T_Receive_Data(void)

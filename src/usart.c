@@ -5,8 +5,8 @@
 #define ADDRESS_T2 9239
 #define ADDRESS_R1 9237
 #define CHANNEL 19
-#define CMD 0x01
-#define DATACNT 8
+#define CMD 0x04
+#define DATACNT 5
 #define DATALEN DATACNT + 6
 
 volatile char isRecvEnd = 0; // 是否收取idle完整一包
@@ -46,6 +46,10 @@ void S_USART_Init(void)
     // UART_Send(UART1, "test idleIrq\r\n", strlen("test idleIrq\r\n"));
 }
 
+void S_USART_Spawn_Radom_Data(void)
+{
+}
+
 uint8_t CheckSum(uint8_t *Buf, uint8_t Len)
 {
     uint8_t i = 0;
@@ -64,6 +68,7 @@ uint8_t CheckSum(uint8_t *Buf, uint8_t Len)
 
 void S_USART_Trans(void)
 {
+#if 0
     txbuf[0] = (uint8_t)(ADDRESS_R1 >> 8);
     txbuf[1] = (uint8_t)ADDRESS_R1;
     txbuf[2] = CHANNEL;
@@ -79,6 +84,25 @@ void S_USART_Trans(void)
     txbuf[12] = TaskTST.ts_temp[1];
     uint8_t *pcheck = txbuf + 4;
     txbuf[13] = CheckSum(pcheck, DATACNT);
+    UART_Send(UART1, txbuf, DATALEN);
+#endif
+}
+
+void S_USART_Fake_Trans(void)
+{
+    srand(read_csr(mcycle));
+    txbuf[0] = (uint8_t)(ADDRESS_R1 >> 8);
+    txbuf[1] = (uint8_t)ADDRESS_R1;
+    txbuf[2] = CHANNEL;
+    txbuf[3] = CMD;
+    txbuf[4] = DATACNT;
+    txbuf[5] = (random() * 100) / 255; // 温度整数
+    txbuf[6] = (random() * 100) / 255; // 湿度整数
+    txbuf[7] = (random() * 100) / 255; // 空气整数
+    txbuf[8] = (random() * 100) / 255; // 烟雾整数
+    txbuf[9] = (random() * 100) / 255;
+    uint8_t *pcheck = txbuf + 4;
+    txbuf[10] = CheckSum(pcheck, DATACNT);
     UART_Send(UART1, txbuf, DATALEN);
 }
 
